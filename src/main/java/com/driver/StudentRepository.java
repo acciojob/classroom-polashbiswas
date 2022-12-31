@@ -49,8 +49,7 @@ public class StudentRepository {
 
     public List<String> findStudentNameFromTeacher(String teacher){
         List<String> studentNameList = new ArrayList<>();
-        if(teacherStudentMapping.containsKey(teacher))
-            studentNameList = teacherStudentMapping.get(teacher);
+        if(teacherStudentMapping.containsKey(teacher)) studentNameList = teacherStudentMapping.get(teacher);
             return studentNameList;
     }
 
