@@ -1,5 +1,6 @@
 package com.driver;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentService {
@@ -27,7 +28,9 @@ public class StudentService {
     }
 
     public List<String> getStudentByTeacherName(String teacher){
-        return studentRepository.findStudentNameFromTeacher(teacher);
+        List<String> listStudent = new ArrayList<>();
+        listStudent = studentRepository.findStudentNameFromTeacher(teacher);
+        return listStudent;
     }
 
     public List<String> getAllStudent(){
