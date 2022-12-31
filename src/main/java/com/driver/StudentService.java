@@ -10,41 +10,48 @@ public class StudentService {
 
     StudentRepository studentRepository = new StudentRepository();
 
-    public void addStudent(Student student){
-        studentRepository.saveStudent(student);
+    String addStudent(Student student){
+        String result = studentRepository.saveStudent(student);
+        return result;
     }
 
-    public void addTeacher(Teacher teacher){
-        studentRepository.saveTeacher(teacher);
+    String addTeacher(Teacher teacher){
+        String result = studentRepository.saveTeacher(teacher);
+        return result;
     }
 
-    public void addStudentTeacherPair(String student, String teacher){
-        studentRepository.saveTeacherStudentPair(student, teacher);
+    String addStudentTeacherPair(String student, String teacher){
+        String result = studentRepository.saveTeacherStudentPair(student, teacher);
+        return result;
     }
 
     public Student getStudentByName(String studentName){
-        return studentRepository.findStudent(studentName);
+        Student student = studentRepository.findStudent(studentName);
+        return student;
     }
 
     public Teacher getTeacherByName(String teacherName){
-        return studentRepository.findTeacher(teacherName);
+        Teacher teacher = studentRepository.findTeacher(teacherName);
+        return teacher;
     }
 
     public List<String> getStudentByTeacherName(String teacher){
-        List<String> listStudent = new ArrayList<>();
-        listStudent = studentRepository.findStudentNameFromTeacher(teacher);
-        return listStudent;
+        List<String> studentNameList = studentRepository.findStudentNameFromTeacher(teacher);
+        return studentNameList;
     }
 
     public List<String> getAllStudent(){
-        return studentRepository.allStudentFind();
+        List<String> studentList = studentRepository.allStudentFind();
+        return studentList;
     }
 
     public void deleteTeacherByName(String teacher){
         studentRepository.deleteTeacher(teacher);
+        return;
     }
 
     public void deleteAllTeacher(){
         studentRepository.deleteAllTeacher();
+        return;
     }
 }

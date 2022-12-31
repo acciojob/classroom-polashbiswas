@@ -20,23 +20,23 @@ public class StudentRepository {
         this.teacherStudentMapping = new HashMap<>();
     }
 
-    public void saveStudent(Student student){
-        studentMap.put(student.getName(), student);
+    String saveStudent(Student student){
+        String name = student.getName();
+        studentMap.put(name, student);
+        return "Successfully added";
     }
 
-    public void saveTeacher(Teacher teacher){
-        teacherMap.put(teacher.getName(), teacher);
+    String saveTeacher(Teacher teacher){
+        String name = teacher.getName();
+        teacherMap.put(name, teacher);
+        return "Successfully Added";
     }
 
-    public void saveTeacherStudentPair(String student, String teacher){
-        if(studentMap.containsKey(student) && teacherMap.containsKey(teacher)){
-            List<String> currentStudentListForTeacher = new ArrayList<>();
-            if(teacherStudentMapping.containsKey(teacher)){
-                currentStudentListForTeacher = teacherStudentMapping.get(teacher);
-                currentStudentListForTeacher.add(student);
-                teacherStudentMapping.put(teacher, currentStudentListForTeacher);
-            }
-        }
+    String saveTeacherStudentPair(String student, String teacher){
+        List<String> studentList = teacherStudentMapping.getOrDefault(teacher, new ArrayList<>());
+        studentList.add(student);
+        teacherStudentMapping.put(teacher, studentList);
+        return "Successfully added";
     }
 
     public Student findStudent(String studentName){
@@ -48,9 +48,8 @@ public class StudentRepository {
     }
 
     public List<String> findStudentNameFromTeacher(String teacher){
-        List<String> studentNameList = new ArrayList<>();
-        if(teacherStudentMapping.containsKey(teacher)) studentNameList = teacherStudentMapping.get(teacher);
-            return studentNameList;
+        List<String> studentNameList = teacherStudentMapping.getOrDefault(teacher, new ArrayList<>());
+        return studentNameList;
     }
 
     public List<String> allStudentFind(){
@@ -58,36 +57,25 @@ public class StudentRepository {
     }
 
     public void deleteTeacher(String teacher){
-        List<String> studentList = new ArrayList<>();
-        if(teacherStudentMapping.containsKey(teacher)){
-            studentList = teacherStudentMapping.get(teacher);
-
-            for(String student: studentList){
-                if(studentMap.containsKey(student)){
-                    studentMap.remove(student);
-                }
+        List<String> studentList = teacherStudentMapping.get(teacher);
+        for (String s : studentList) {
+            if (studentMap.containsKey(s)) {
+                studentMap.remove(s);
             }
-            teacherStudentMapping.remove(teacher);
         }
-        if (teacherMap.containsKey(teacher)){
-            teacherMap.remove(teacher);
-        }
+        teacherStudentMapping.remove(teacher);
     }
 
     public void deleteAllTeacher(){
-        HashSet<String> studentSet = new HashSet<>();
-        teacherMap = new HashMap<>();
-        for(String teacher: teacherStudentMapping.keySet()){
-            for(String student: teacherStudentMapping.get(teacher)){
-                studentSet.add(student);
+        for (String teacher : teacherStudentMapping.keySet()) {
+            List<String> StudentList = teacherStudentMapping.get(teacher);
+            for (String s : StudentList) {
+                if (studentMap.containsKey(s)) {
+                    studentMap.remove(s);
+                }
             }
         }
-        for(String student: studentSet){
-            if(studentMap.containsKey(student)){
-                studentMap.remove(student);
-            }
-        }
-        teacherStudentMapping = new HashMap<>();
+        teacherStudentMapping.clear();
     }
 
 
